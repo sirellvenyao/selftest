@@ -1,13 +1,13 @@
 variable "aws_region" {
-	default "ap-east-1"
+	default = "ap-east-1"
 }
 
 }
 variable "business-line"{
-	default "ops"
+	default = "ops"
 }
 variable "xygj_private_ip"{
-	default "10.200.14.56/32"
+	default = "10.200.14.56/32"
 }
 
 
