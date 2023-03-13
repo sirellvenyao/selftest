@@ -2,7 +2,6 @@ variable "aws_region" {
 	default = "ap-east-1"
 }
 
-}
 variable "business-line"{
 	default = "ops"
 }
