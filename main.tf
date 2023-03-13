@@ -2,19 +2,30 @@ provider "aws" {
   region = var.region
 }
 
-resource "public_subnet" "tf_vpc" {
-  source = "../../modules/kc_subnet"
+resource "aws_security_group" "endpoint_shared" {
   vpc_id = aws_vpc.default.id
-  route_table_id = aws_route_table.public.id
-  subnet_cidr = var.public_subnet_cidr
-  availability_zones = var.availability_zones
-  vpc_name = var.vpc_name
-  name_suffix = "public1"
+  name = "endpoint_shared"
+  description = "Common endpoints security group."
+  lifecycle {
+    prevent_destroy = true
+  }
+  ingress {
+    cidr_blocks = [var.vpc_cidr]
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+    self = true
+  }
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+  }
   tags = {
-    immutable_metadata = "{ \"purpose\": \"internal_${var.vpc_name}\", \"target\": null }"
+    Name = "endpoint_shared"
     created-by = var.created-by
     owner = var.owner
     business-line = var.business-line
-    "kubernetes.io/role/elb" = "1"
   }
 }
