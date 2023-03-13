@@ -16,7 +16,7 @@ resource "aws_vpc" "default" {
   }
 }
 
-resource "monitor_shared_sg" "abc"{
+module "monitor_shared_sg" {
 
   name        = "vaex-monitor-shared"
   description = "The shared sg for monitor resources."
