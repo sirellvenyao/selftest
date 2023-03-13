@@ -18,8 +18,6 @@ resource "aws_vpc" "default" {
 
 resource "monitor_shared_sg" "abc"{
 
-  source = "terraform-aws-modules/security-group/aws"
-
   name        = "vaex-monitor-shared"
   description = "The shared sg for monitor resources."
   vpc_id      = aws_vpc.default.id
