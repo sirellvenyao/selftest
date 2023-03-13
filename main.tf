@@ -2,7 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-module "public_subnet" {
+resource "public_subnet" {
   source = "../../modules/kc_subnet"
   vpc_id = aws_vpc.default.id
   route_table_id = aws_route_table.public.id
