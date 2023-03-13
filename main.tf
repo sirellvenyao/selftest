@@ -22,7 +22,7 @@ module "monitor_shared_sg" {
 
   name        = "vaex-monitor-shared"
   description = "The shared sg for monitor resources."
-  vpc_id      = data.terraform_remote_state.network.outputs.vpc_id
+  vpc_id      = aws_vpc.default.id
 
   ingress_rules = [
 
