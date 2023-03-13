@@ -16,5 +16,6 @@ resource "public_subnet" {
     owner = var.owner
     business-line = var.business-line
     "kubernetes.io/role/elb" = "1"
+    name = "just test"
   }
 }
