@@ -2,13 +2,19 @@ provider "aws" {
   region = var.region
 }
 
-resource "aws_vpc" "tf_vpc" {
-  cidr_block           = "10.222.10.0/24"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
+module "public_subnet" {
+  source = "../../modules/kc_subnet"
+  vpc_id = aws_vpc.default.id
+  route_table_id = aws_route_table.public.id
+  subnet_cidr = var.public_subnet_cidr
+  availability_zones = var.availability_zones
+  vpc_name = var.vpc_name
+  name_suffix = "public1"
   tags = {
-    Name = "tf_test"
+    immutable_metadata = "{ \"purpose\": \"internal_${var.vpc_name}\", \"target\": null }"
+    created-by = var.created-by
+    owner = var.owner
+    business-line = var.business-line
+    "kubernetes.io/role/elb" = "1"
   }
-
 }
