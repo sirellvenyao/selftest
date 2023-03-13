@@ -1,4 +1,4 @@
-variable "aws_region"{
+variable "aws_region" {
 	default "ap-east-1"
 }
 
