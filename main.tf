@@ -2,7 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-resource "public_subnet" {
+resource "public_subnet" "tf_vpc" {
   source = "../../modules/kc_subnet"
   vpc_id = aws_vpc.default.id
   route_table_id = aws_route_table.public.id
@@ -16,6 +16,5 @@ resource "public_subnet" {
     owner = var.owner
     business-line = var.business-line
     "kubernetes.io/role/elb" = "1"
-    name = "just test"
   }
 }
