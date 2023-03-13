@@ -50,6 +50,4 @@ variable "owner"{
 	default = "morty"
 }
 
-variable "business-line"{
-	default = "ops"
-}
+
