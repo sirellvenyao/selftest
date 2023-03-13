@@ -16,7 +16,7 @@ resource "aws_vpc" "default" {
   }
 }
 
-module "monitor_shared_sg" {
+resource "monitor_shared_sg" "abc"{
 
   source = "terraform-aws-modules/security-group/aws"
 
