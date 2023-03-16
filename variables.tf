@@ -1,9 +1,9 @@
 variable "aws_region" {
-	default = "ap-east-1"
+	default = "ap-northeast-1a"
 }
 
 variable "region" {
-	default = "ap-east-1"
+	default = "ap-northeast-1a"
 }
 
 variable "business-line"{
