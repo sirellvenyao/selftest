@@ -1,3 +1,7 @@
+provider "aws" {
+  region = var.region
+}
+
 resource "aws_vpc" "tf_vpc2" {
   cidr_block           = "10.222.0.0/16"
   enable_dns_hostnames = true
