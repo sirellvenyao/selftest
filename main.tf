@@ -63,8 +63,41 @@ resource "aws_security_group" "tf_test" {
     protocol  = "-1"
     to_port   = 0
   }
+  ingress {
+    cidr_blocks = ["10.2.0.0/16"]
+    from_port = 22
+    protocol  = "tcp"
+    to_port   = 22
+    self = true
+  }  
   tags = {
     Name = "endpoint_shared"
+    business-line = "test"
+  }
+}
+
+resource "aws_security_group" "sentinel_22_added_sg" {
+  vpc_id = aws_vpc.tf_vpc2.id
+  name = "sentinel_22_added_sg"
+  description = "sentinel_22_added_sg"
+  lifecycle {
+    prevent_destroy = true
+  }
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port = 0
+    protocol  = "-1"
+    to_port   = 0
+  }
+  ingress {
+    cidr_blocks = ["10.3.0.0/16"]
+    from_port = 22
+    protocol  = "tcp"
+    to_port   = 22
+    self = true
+  }  
+  tags = {
+    Name = "sentinel_22_added_sg"
     business-line = "test"
   }
 }
