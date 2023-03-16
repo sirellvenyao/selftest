@@ -1,10 +1,10 @@
 variable "aws_region" {
-	default = "ap-northeast-1a"
+	default = "ap-east-1"
 }
 variable "aws" {
-	default = "ap-northeast-1a"
+	default = "ap-east-1"
 }
 
 variable "region" {
-	default = "ap-northeast-1a"
+	default = "ap-east-1"
 }
