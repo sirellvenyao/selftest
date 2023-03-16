@@ -45,9 +45,9 @@ resource "aws_security_group" "tf_test" {
   }
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
-    from_port = 0
-    protocol  = "-1"
-    to_port   = 0
+    from_port = 22
+    protocol  = "tcp"
+    to_port   = 22
     self = true
   }
   egress {
