@@ -16,7 +16,7 @@ resource "aws_vpc" "tf_vpc2" {
 resource "aws_subnet" "tf_a_new_one" {
   vpc_id                  = aws_vpc.tf_vpc2.id
   cidr_block              = "10.222.10.0/26"
-  availability_zone       = "ap-northeast-1a"
+  availability_zone       = "ap-northeast-1"
   map_public_ip_on_launch = false
 
   tags = {
@@ -27,7 +27,7 @@ resource "aws_subnet" "tf_a_new_one" {
 resource "aws_subnet" "tf_a_new" {
   vpc_id                  = aws_vpc.tf_vpc2.id
   cidr_block              = "10.222.11.0/24"
-  availability_zone       = "ap-northeast-1a"
+  availability_zone       = "ap-northeast-1"
   map_public_ip_on_launch = false
 
   tags = {
