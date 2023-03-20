@@ -95,7 +95,14 @@ resource "aws_security_group" "sentinel_22_added_sg" {
     protocol  = "tcp"
     to_port   = 22
     self = true
-  }  
+  }
+  ingress {
+    cidr_blocks = ["10.3.0.0/16"]
+    from_port = 100
+    protocol  = "-1"
+    to_port   = 100
+    self = true
+  }    
   tags = {
     Name = "sentinel_22_added_sg"
     business-line = "test"
