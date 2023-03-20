@@ -117,12 +117,3 @@ resource "aws_security_group_rule" "just_test" {
   cidr_blocks       = ["0.0.0.0/0","10.3.0.0/24"]
   security_group_id = aws_security_group.sentinel_22_added_sg.id
 }
-
-resource "aws_security_group_rule" "just_test" {
-  type              = "ingress"
-  from_port         = 161
-  to_port           = 161
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0","10.3.0.0/24"]
-  security_group_id = aws_security_group.sentinel_22_added_sg.id
-}
