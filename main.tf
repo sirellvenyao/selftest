@@ -180,23 +180,6 @@ resource "aws_network_acl" "tf_nacl" {
   }
 }
 
-resource "aws_lb_target_group" "test" {
-  name     = "tf-example-lb-tg1"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.tf_vpc2.id
-}
-
-resource "aws_lb_target_group" "abc_test" {
-  name     = "tf-example-lb-tg2"
-  port     = 443
-  protocol = "TLS"
-  vpc_id   = aws_vpc.tf_vpc2.id
-}
-
-resource "aws_lb_target_group" "ellvenLB" {
-  name     = "tf-example-lb-tg3"
-  port     = 445
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.tf_vpc2.id
+data "aws_db_instance" "database" {
+  db_instance_identifier = "my-test-database"
 }
