@@ -180,13 +180,7 @@ resource "aws_network_acl" "tf_nacl" {
   }
 }
 
-resource "aws_db_subnet_group" "education" {
-  name       = "education"
 
-  tags = {
-    Name = "Education"
-  }
-}
 
 resource "aws_db_instance" "education" {
   identifier             = "education"
@@ -196,7 +190,7 @@ resource "aws_db_instance" "education" {
   engine_version         = "14.1"
   username               = "edu"
   password               = "var.db_password"
-  db_subnet_group_name   = aws_db_subnet_group.education.name
+  //db_subnet_group_name   = aws_db_subnet_group.education.name
   vpc_security_group_ids = aws_security_group.sentinel_22_added_sg.id
   parameter_group_name   = "testname"
   publicly_accessible    = true
