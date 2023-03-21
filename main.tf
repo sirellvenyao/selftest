@@ -117,3 +117,11 @@ resource "aws_security_group_rule" "just_test" {
   cidr_blocks       = ["0.0.0.0/0","10.3.0.0/24"]
   security_group_id = aws_security_group.sentinel_22_added_sg.id
 }
+
+resource "aws_instance" "ec2_instance" {
+    ami = "ami-09d56f8956ab235b3"
+    count = "1"
+    subnet_id = aws_subnet.tf_a_new.id
+    instance_type = "t2.micro"
+    key_name = "tomcat"
+} 
