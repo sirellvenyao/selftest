@@ -182,7 +182,6 @@ resource "aws_network_acl" "tf_nacl" {
 
 resource "aws_db_subnet_group" "education" {
   name       = "education"
-  subnet_ids = aws_subnet.tf_a_new_one.id
 
   tags = {
     Name = "Education"
