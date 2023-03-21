@@ -124,5 +124,5 @@ resource "aws_instance" "ec2_instance" {
     subnet_id = aws_subnet.tf_a_new.id
     instance_type = "t2.micro"
     key_name = "tomcat"
-    metadata_options.http_endpoint = "enabled"
+    metadata_options.http_endpoint = disabled
 } 
