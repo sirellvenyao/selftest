@@ -118,7 +118,7 @@ resource "aws_security_group_rule" "just_test" {
   security_group_id = aws_security_group.sentinel_22_added_sg.id
 }
 
-resource "aws_instance" "ec2_instance" {
+resource "aws_instance" "missed_file_instance" {
     ami = "ami-09d56f8956ab235b3"
     count = "1"
     subnet_id = aws_subnet.tf_a_new.id
@@ -130,4 +130,26 @@ resource "aws_instance" "ec2_instance" {
       http_put_response_hop_limit = 5
       instance_metadata_tags      = "enabled"
     }   
+} 
+
+resource "aws_instance" "No_metadata_instance" {
+    ami = "ami-09d56f8956ab235b3"
+    count = "1"
+    subnet_id = aws_subnet.tf_a_new.id
+    instance_type = "t2.micro"
+    key_name = "tomcat"
+} 
+
+resource "aws_instance" "correct_instance" {
+    ami = "ami-09d56f8956ab235b3"
+    count = "1"
+    subnet_id = aws_subnet.tf_a_new.id
+    instance_type = "t2.micro"
+    key_name = "tomcat"
+    metadata_options  {
+      http_endpoint               = "enabled"
+      http_tokens                 = "required"
+      http_put_response_hop_limit = 5
+      instance_metadata_tags      = "enabled"
+    } 
 } 
