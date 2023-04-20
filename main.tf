@@ -196,3 +196,16 @@ resource "aws_db_instance" "education" {
   publicly_accessible    = true
   skip_final_snapshot    = true
 }
+
+resource "aws_elasticsearch_domain" "example" {
+  domain_name           = "example"
+  elasticsearch_version = "7.10"
+
+  cluster_config {
+    instance_type = "r4.large.elasticsearch"
+  }
+
+  tags = {
+    Domain = "TestDomain"
+  }
+}
