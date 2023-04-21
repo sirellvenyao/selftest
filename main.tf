@@ -226,3 +226,16 @@ resource "aws_elb" "wu-tang" {
     Name = "wu-tang"
   }
 }
+
+resource "aws_load_balancer_policy" "wu-tang-ca-pubkey-policy" {
+  load_balancer_name = aws_elb.wu-tang.name
+  policy_name        = "wu-tang-ca-pubkey-policy"
+  policy_type_name   = "PublicKeyPolicyType"
+
+  # The public key of a CA certificate file can be extracted with:
+  # $ cat wu-tang-ca.pem | openssl x509 -pubkey -noout | grep -v '\-\-\-\-' | tr -d '\n' > wu-tang-pubkey
+  policy_attribute {
+    name  = "PublicKey"
+    value = file("wu-tang-pubkey")
+  }
+}
