@@ -300,7 +300,7 @@ resource "aws_ecs_service" "test" {
   name                  = "test"
   scheduling_strategy   = "DAEMON"
   network_configuration {
-    subnets = aws_subnet.tf_a_new.id
+    subnets             = "tf_a_new"
     assign_public_ip    = false
   }
   
