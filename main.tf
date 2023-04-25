@@ -289,3 +289,19 @@ TASK_DEFINITION
     cpu_architecture        = "X86_64"
   }
 }
+
+
+resource "aws_ecs_service" "bar" {
+  name                = "bar"
+  cluster             = aws_ecs_cluster.foo.id
+  task_definition     = aws_ecs_task_definition.bar.arn
+  scheduling_strategy = "DAEMON"
+}
+
+resource "aws_ecs_service" "test" {
+  name                = "bar"
+  cluster             = aws_ecs_cluster.foo.id
+  task_definition     = aws_ecs_task_definition.bar.arn
+  scheduling_strategy = "DAEMON"
+  assign_public_ip    = false
+}
