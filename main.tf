@@ -297,7 +297,11 @@ resource "aws_ecs_service" "bar" {
 }
 
 resource "aws_ecs_service" "test" {
-  name                = "test"
-  scheduling_strategy = "DAEMON"
-  assign_public_ip    = false
+  name                  = "test"
+  scheduling_strategy   = "DAEMON"
+  network_configuration {
+    subnets = aws_subnet.tf_a_new.id
+    assign_public_ip    = false
+  }
+  
 }
