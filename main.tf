@@ -299,9 +299,8 @@ resource "aws_ecs_service" "bar" {
 resource "aws_ecs_service" "test" {
   name                  = "test"
   scheduling_strategy   = "DAEMON"
-  network_configuration {
-    subnets         = "tf_a_new_one"
-    assign_public_ip    = false
+  ordered_placement_strategy {
+    type         = "binpack"
   }
   
 }
