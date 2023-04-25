@@ -296,12 +296,3 @@ resource "aws_ecs_service" "bar" {
   scheduling_strategy = "DAEMON"
 }
 
-resource "aws_ecs_service" "test" {
-  name                  = "test"
-  scheduling_strategy   = "DAEMON"
-  network_configuration {
-    subnets         = ["${var.awsvpc_service_subnetids}"]
-    assign_public_ip    = false
-  }
-  
-}
