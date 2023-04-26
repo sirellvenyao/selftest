@@ -180,8 +180,6 @@ resource "aws_network_acl" "tf_nacl" {
   }
 }
 
-
-
 resource "aws_db_instance" "education" {
   identifier             = "education"
   instance_class         = "db.t3.micro"
