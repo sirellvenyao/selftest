@@ -311,8 +311,6 @@ resource "aws_lb" "test" {
   name               = "test-lb-tf"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = aws_security_group.sentinel_22_added_sg.id
-  subnets            = aws_subnet.tf_a_new.id
 
   enable_deletion_protection = true
 
