@@ -120,18 +120,6 @@ resource "aws_security_group_rule" "just_test" {
   security_group_id = aws_security_group.sentinel_22_added_sg.id
 }
 
-resource "aws_lb" "test" {
-  name               = "test-lb-tf"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = aws_security_group.sentinel_22_added_sg.id
-  subnets            = aws_subnet.tf_a_new.id
-
-  enable_deletion_protection = true
-  tags = {
-    Environment = "production"
-  }
-}
 
 
 resource "aws_instance" "missed_file_instance" {
@@ -317,4 +305,18 @@ resource "aws_ecs_service" "test" {
     type         = "binpack"
   }
   
+}
+
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = aws_security_group.sentinel_22_added_sg.id
+  subnets            = aws_subnet.tf_a_new.id
+
+  enable_deletion_protection = true
+
+  tags = {
+    Environment = "production"
+  }
 }
