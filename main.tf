@@ -211,7 +211,7 @@ resource "aws_sqs_queue" "terraform_queue" {
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
   redrive_policy = jsonencode({
-    maxReceiveCount     = 4
+    maxReceiveCount     = 3
   })
 
   tags = {
