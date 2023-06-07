@@ -1,6 +1,7 @@
 provider "aws" {
   region = var.region
 }
+
 resource "aws_elb" "wu-tang" {
   name               = "wu-tang"
   availability_zones = ["us-east-1a"]
@@ -18,17 +19,6 @@ resource "aws_elb" "wu-tang" {
   }
 }
 
-resource "aws_load_balancer_policy" "wu-tang-root-ca-backend-auth-policy" {
-  load_balancer_name = aws_elb.wu-tang.name
-  policy_name        = "wu-tang-root-ca-backend-auth-policy"
-  policy_type_name   = "BackendServerAuthenticationPolicyType"
-
-  policy_attribute {
-    name  = "PublicKeyPolicyName"
-    value = aws_load_balancer_policy.wu-tang-root-ca-pubkey-policy.policy_name
-  }
-}
-
 resource "aws_load_balancer_policy" "wu-tang-ssl" {
   load_balancer_name = aws_elb.wu-tang.name
   policy_name        = "wu-tang-ssl"
@@ -43,4 +33,14 @@ resource "aws_load_balancer_policy" "wu-tang-ssl" {
     name  = "Protocol-TLSv1.2"
     value = "true"
   }
+}
+
+
+resource "aws_load_balancer_listener_policy" "wu-tang-listener-policies-443" {
+  load_balancer_name = aws_elb.wu-tang.name
+  load_balancer_port = 443
+
+  policy_names = [
+    aws_load_balancer_policy.wu-tang-ssl.policy_name,
+  ]
 }
