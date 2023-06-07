@@ -1,272 +1,46 @@
 provider "aws" {
   region = var.region
 }
+resource "aws_elb" "wu-tang" {
+  name               = "wu-tang"
+  availability_zones = ["us-east-1a"]
 
-# 1.for Ensure permissions are tightly controlled for AWS ElasticSearch Domains
-
-variable "domain" {
-  default = "tf-test"
-}
-
-data "aws_region" "current" {}
-
-data "aws_caller_identity" "current" {}
-
-resource "aws_elasticsearch_domain" "example" {
-  domain_name = var.domain
-
-  # ... other configuration ...
-
-  access_policies = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "es:*",
-      "Principal": "*",
-      "Effect": "Allow",
-      "Resource": "arn:aws:es:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.domain}/*",
-      "Condition": {
-        "IpAddress": {"aws:SourceIp": ["66.193.100.22/32"]}
-      }
-    }
-  ]
-}
-POLICY
-}
-
-
-# 2. Ensure public access is disabled for Amazon Simple Notification Service (SNS)
-
-resource "aws_sns_topic" "test" {
-  name = "my-topic-with-policy"
-}
-
-resource "aws_sns_topic_policy" "default" {
-  arn = aws_sns_topic.test.arn
-
-  policy = data.aws_iam_policy_document.sns_topic_policy.json
-}
-
-data "aws_iam_policy_document" "sns_topic_policy" {
-  policy_id = "__default_policy_ID"
-
-  statement {
-    actions = [
-      "SNS:Subscribe",
-      "SNS:SetTopicAttributes",
-      "SNS:RemovePermission",
-      "SNS:Receive",
-      "SNS:Publish",
-      "SNS:ListSubscriptionsByTopic",
-      "SNS:GetTopicAttributes",
-      "SNS:DeleteTopic",
-      "SNS:AddPermission",
-    ]
-
-    condition {
-      test     = "StringEquals"
-      variable = "AWS:SourceOwner"
-      values = [
-        "",
-        "home/",
-        "home/&{aws:username}/",
-      ]
-    }
-
-
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    resources = [
-      aws_sns_topic.test.arn,
-    ]
-
-    sid = "__default_statement_ID"
+  listener {
+    instance_port      = 443
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = "arn:aws:iam::000000000000:server-certificate/wu-tang.net"
   }
-}
-
-
-# 3. Ensure permissions are tightly controlled for Amazon Elastic Container Registry (Amazon ECR)
-
-resource "aws_ecr_repository" "foo" {
-  name = "bar"
-}
-
-data "aws_iam_policy_document" "foopolicy" {
-  statement {
-    sid    = "new policy"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["123456789012"]
-    }
-
-    actions = [
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:PutImage",
-      "ecr:InitiateLayerUpload",
-      "ecr:UploadLayerPart",
-      "ecr:CompleteLayerUpload",
-      "ecr:DescribeRepositories",
-      "ecr:GetRepositoryPolicy",
-      "ecr:ListImages",
-      "ecr:DeleteRepository",
-      "ecr:BatchDeleteImage",
-      "ecr:SetRepositoryPolicy",
-      "ecr:DeleteRepositoryPolicy",
-    ]
-  }
-}
-
-resource "aws_ecr_repository_policy" "foopolicy" {
-  repository = aws_ecr_repository.foo.name
-  policy     = data.aws_iam_policy_document.foopolicy.json
-}
-
-
-# 4. Ensure permissions are tightly controlled for AWS EFS File System
-
-resource "aws_efs_file_system" "fs" {
-  creation_token = "my-product"
-}
-
-data "aws_iam_policy_document" "policy" {
-  statement {
-    sid    = "ExampleStatement01"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "elasticfilesystem:ClientMount",
-      "elasticfilesystem:ClientWrite",
-    ]
-
-    resources = [aws_efs_file_system.fs.arn]
-
-    condition {
-      test     = "Bool"
-      variable = "aws:SecureTransport"
-      values   = ["true"]
-    }
-  }
-}
-
-resource "aws_efs_file_system_policy" "policy" {
-  file_system_id = aws_efs_file_system.fs.id
-  policy         = data.aws_iam_policy_document.policy.json
-}
-
-
-# 5. Ensure principal is defined for every IAM policy attached to AWS Key Management Service (KMS) key
-
-resource "aws_kms_key" "a" {
-  description             = "KMS key 1"
-  deletion_window_in_days = 10
-}
-
-
-
-# 6. Ensure that IAM Users are Unauthorized to Edit Access Policies
-
-resource "aws_iam_policy" "policy" {
-  name        = "test_policy"
-  path        = "/"
-  description = "My test policy"
-
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "ec2:Describe*",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
-}
-
-
-# 8. Ensure Amazon Simple Queue Service (SQS) is not exposed to public
-
-resource "aws_sqs_queue" "terraform_queue" {
-  name                      = "terraform-example-queue"
-  delay_seconds             = 90
-  max_message_size          = 2048
-  message_retention_seconds = 86400
-  receive_wait_time_seconds = 10
-  redrive_policy = jsonencode({
-    maxReceiveCount     = 3
-  })
 
   tags = {
-    Environment = "production"
+    Name = "wu-tang"
   }
 }
 
-# 9. RDS SG
+resource "aws_load_balancer_policy" "wu-tang-root-ca-backend-auth-policy" {
+  load_balancer_name = aws_elb.wu-tang.name
+  policy_name        = "wu-tang-root-ca-backend-auth-policy"
+  policy_type_name   = "BackendServerAuthenticationPolicyType"
 
-resource "aws_security_group" "wp_db_security_group" {
-  name        = "wp_db_security_group"
-  description = "Control access to the wp database server."
+  policy_attribute {
+    name  = "PublicKeyPolicyName"
+    value = aws_load_balancer_policy.wu-tang-root-ca-pubkey-policy.policy_name
+  }
 }
 
-# TCP
+resource "aws_load_balancer_policy" "wu-tang-ssl" {
+  load_balancer_name = aws_elb.wu-tang.name
+  policy_name        = "wu-tang-ssl"
+  policy_type_name   = "SSLNegotiationPolicyType"
 
-# INGRESS
+  policy_attribute {
+    name  = "ECDHE-ECDSA-AES128-GCM-SHA256"
+    value = "true"
+  }
 
-# allow ssh access from port 3306 (sql) from ${var.ec2_instance_wp_private_ips}/32
-resource "aws_security_group_rule" "ingress_sql" {
-  security_group_id = "${aws_security_group.wp_db_security_group.id}"
-  type              = "ingress"
-  cidr_blocks       = ["10.1.1.1/32"]
-  protocol          = "tcp"
-  from_port         = 3306
-  to_port           = 3306
-}
-# EXGRESS
-
-# allow reply traffic from the server to the internet on ephemeral ports
-resource "aws_security_group_rule" "engress_sql" {
-  security_group_id = "${aws_security_group.wp_db_security_group.id}"
-  type              = "egress"
-  cidr_blocks       = ["0.0.0.0/0"]
-  protocol          = "all"
-  from_port         = 1024
-  to_port           = 65535
-}
-
-
-# 10. RDS 
-
-resource "aws_db_instance" "wp_db" {
-  allocated_storage    = 10
-  storage_type         = "gp2"
-  engine               = "mariadb"
-  engine_version       = "10.2"
-  instance_class       = "db.t2.micro"
-  username             = "wp_db_user"
-  password             = "wp_db_pass"
-  parameter_group_name = "default.mariadb10.2"
-  skip_final_snapshot  = true
-
-  # list of security groups for the instance
-  vpc_security_group_ids = [
-    "${aws_security_group.wp_db_security_group.name}"
-  ]
+  policy_attribute {
+    name  = "Protocol-TLSv1.2"
+    value = "true"
+  }
 }
