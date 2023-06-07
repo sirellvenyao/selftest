@@ -2,7 +2,7 @@ provider "aws" {
   region = var.region
 }
 
-# 1. for Ensure permissions are tightly controlled for AWS ElasticSearch Domains
+# 1.for Ensure permissions are tightly controlled for AWS ElasticSearch Domains
 
 variable "domain" {
   default = "tf-test"
