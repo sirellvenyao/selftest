@@ -44,3 +44,12 @@ resource "aws_load_balancer_listener_policy" "wu-tang-listener-policies-443" {
     aws_load_balancer_policy.wu-tang-ssl.policy_name,
   ]
 }
+
+resource "aws_s3_bucket" "example" {
+  bucket = "my-tf-example-bucket"
+}
+
+resource "aws_s3_bucket_acl" "example_bucket_acl" {
+  bucket = aws_s3_bucket.example.id
+  acl    = "private"
+}
