@@ -68,7 +68,7 @@ resource "aws_security_group" "tf_test" {
 
 
 resource "aws_instance" "this" {
-  ami           = "ami-0cdf6eadd255d6f9e"
+  //ami           = "ami-0cdf6eadd255d6f9e"
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.tf_a_new_one.id
 }
