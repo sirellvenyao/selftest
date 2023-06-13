@@ -68,6 +68,6 @@ resource "aws_security_group" "tf_test" {
 
 
 resource "aws_instance" "this" {
-  ami           = "ami-005e54dee72cc1d00" # us-west-2
+  ami           = "ami-0cdf6eadd255d6f9e"
   instance_type = "t2.micro"
 }
