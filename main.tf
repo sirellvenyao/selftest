@@ -66,23 +66,8 @@ resource "aws_security_group" "tf_test" {
   }
 }
 
-data "aws_ami" "this" {
-  most_recent = true
-  owners      = ["amazon"]
-  filter {
-    name   = "architecture"
-    values = ["arm64"]
-  }
-  filter {
-    name   = "name"
-    values = ["al2023-ami-2023*"]
-  }
-}
 
 resource "aws_instance" "this" {
-  ami = data.aws_ami.this.id
-  instance_type = "t4g.nano"
-  tags = {
-    Name = "test-spot"
-  }
+  ami           = "ami-005e54dee72cc1d00" # us-west-2
+  instance_type = "t2.micro"
 }
