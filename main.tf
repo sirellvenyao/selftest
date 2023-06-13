@@ -17,7 +17,7 @@ resource "aws_subnet" "tf_a_new_one" {
   vpc_id                  = aws_vpc.tf_vpc2.id
   cidr_block              = "10.222.10.0/26"
   availability_zone       = "ap-east-1c"
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = true
 
   tags = {
     Name = "tf_a_new_one"
