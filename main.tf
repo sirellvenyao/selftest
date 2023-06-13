@@ -29,7 +29,7 @@ resource "aws_subnet" "tf_a_new" {
   cidr_block              = "10.222.155.0/24"
   availability_zone       = "ap-east-1c"
   map_public_ip_on_launch = false
-
+  enable_dns64 = true
   tags = {
     Name = "tf_a_new_one"
   }
