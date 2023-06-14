@@ -1,12 +1,12 @@
 provider "aws" {
   region = var.region
 }
-resource "aws_s3_bucket" "b" {
+resource "aws_s3_bucket" "my_tf_test_bucket" {
   bucket = "my_tf_test_bucket"
 }
 
-resource "aws_s3_bucket_policy" "b" {
-  bucket = aws_s3_bucket.b.id
+resource "aws_s3_bucket_policy" "my_tf_test_bucket" {
+  bucket = aws_s3_bucket.my_tf_test_bucket.id
 
   policy = <<POLICY
 {
