@@ -1,12 +1,12 @@
 provider "aws" {
   region = var.region
 }
-resource "aws_s3_bucket" "mytest" {
-  bucket = "mytest"
+resource "aws_s3_bucket" "mytestssakvnkasicsk19230dklsc" {
+  bucket = "mytestssakvnkasicsk19230dklsc"
 }
 
-resource "aws_s3_bucket_policy" "mytest" {
-  bucket = aws_s3_bucket.mytest.id
+resource "aws_s3_bucket_policy" "mytestssakvnkasicsk19230dklsc" {
+  bucket = aws_s3_bucket.mytestssakvnkasicsk19230dklsc.id
 
   policy = <<POLICY
 {
@@ -18,7 +18,7 @@ resource "aws_s3_bucket_policy" "mytest" {
       "Effect": "Deny",
       "Principal": "*",
       "Action": "s3:*",
-      "Resource": "arn:aws:s3:::mytest/*",
+      "Resource": "arn:aws:s3:::mytestssakvnkasicsk19230dklsc/*",
       "Condition": {
          "IpAddress": {"aws:SourceIp": "8.8.8.8/32"}
       }
