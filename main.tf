@@ -1,74 +1,29 @@
 provider "aws" {
   region = var.region
 }
-
-resource "aws_vpc" "tf_vpc2" {
-  cidr_block           = "10.222.0.0/16"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-
-  tags = {
-    Name = "tf_test"
-  }
-
+resource "aws_s3_bucket" "b" {
+  bucket = "my_tf_test_bucket"
 }
 
-resource "aws_subnet" "tf_a_new_one" {
-  vpc_id                  = aws_vpc.tf_vpc2.id
-  cidr_block              = "10.222.10.0/26"
-  availability_zone       = "ap-east-1c"
-  map_public_ip_on_launch = true
+resource "aws_s3_bucket_policy" "b" {
+  bucket = aws_s3_bucket.b.id
 
-  tags = {
-    Name = "tf_a_new_one"
-  }
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "MYBUCKETPOLICY",
+  "Statement": [
+    {
+      "Sid": "IPAllow",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::my_tf_test_bucket/*",
+      "Condition": {
+         "IpAddress": {"aws:SourceIp": "8.8.8.8/32"}
+      }
+    }
+  ]
 }
-
-
-
-resource "aws_security_group" "tf_test" {
-  vpc_id = aws_vpc.tf_vpc2.id
-  name = "endpoint_shared"
-  description = "Common endpoints security group."
-  lifecycle {
-    prevent_destroy = true
-  }
-  ingress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
-    self = true
-  }
-  ingress {
-    cidr_blocks = ["10.0.0.0/16"]
-    from_port = 80
-    protocol  = "tcp"
-    to_port   = 80
-    self = true
-  }
-  egress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port = 0
-    protocol  = "-1"
-    to_port   = 0
-  }
-  ingress {
-    cidr_blocks = ["10.2.0.0/16"]
-    from_port = 22
-    protocol  = "tcp"
-    to_port   = 22
-    self = true
-  }  
-  tags = {
-    Name = "endpoint_shared"
-    business-line = "test"
-  }
-}
-
-
-resource "aws_instance" "this" {
-  ami           = "ami-0cdf6eadd255d6f9e"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.tf_a_new_one.id
+POLICY
 }
