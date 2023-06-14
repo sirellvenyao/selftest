@@ -17,7 +17,12 @@ resource "aws_s3_bucket_policy" "mytestssakvnkasicsk19230dklsc" {
       "Sid": "IPAllow",
       "Effect": "Deny",
       "Principal": "*",
-      "Action": "s3:*",
+      "Action": [
+        "s3:GetBucketVersioning",
+        "s3:PutBucketVersioning",
+        "s3:ReplicateObject",
+        "s3:ReplicateDelete"
+      ],
       "Resource": "arn:aws:s3:::mytestssakvnkasicsk19230dklsc/*",
       "Condition": {
          "IpAddress": {"aws:SourceIp": "8.8.8.8/32"}
