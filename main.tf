@@ -1,12 +1,12 @@
 provider "aws" {
   region = var.region
 }
-resource "aws_s3_bucket" "my_tf_test_bucket" {
-  bucket = "my_tf_test_bucket"
+resource "aws_s3_bucket" "mytest" {
+  bucket = "mytest"
 }
 
-resource "aws_s3_bucket_policy" "my_tf_test_bucket" {
-  bucket = aws_s3_bucket.my_tf_test_bucket.id
+resource "aws_s3_bucket_policy" "mytest" {
+  bucket = aws_s3_bucket.mytest.id
 
   policy = <<POLICY
 {
@@ -18,7 +18,7 @@ resource "aws_s3_bucket_policy" "my_tf_test_bucket" {
       "Effect": "Deny",
       "Principal": "*",
       "Action": "s3:*",
-      "Resource": "arn:aws:s3:::my_tf_test_bucket/*",
+      "Resource": "arn:aws:s3:::mytest/*",
       "Condition": {
          "IpAddress": {"aws:SourceIp": "8.8.8.8/32"}
       }
