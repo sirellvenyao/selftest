@@ -33,8 +33,8 @@ resource "aws_s3_bucket_policy" "mytestssakvnkasicsk19230dklsc" {
 POLICY
 }
 
-resource "aws_s3_bucket" "mytestssakvnkasicsk19230dklsc" {
-  bucket = "mytestssakvnkasicsk19230dklsc"
+resource "aws_s3_bucket" "Ellventestssakvnkasicsk19230dklsc" {
+  bucket = "Ellventestssakvnkasicsk19230dklsc"
 }
 
 resource "aws_s3_bucket_policy" "Ellventestssakvnkasicsk19230dklsc" {
