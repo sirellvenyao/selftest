@@ -156,23 +156,10 @@ POLICY
 
 resource "aws_iam_role" "example" {
   name                = "yak_role"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
+  assume_role_policy  = data.aws_iam_policy_document.instance_assume_role_policy.json # (not shown)
+  managed_policy_arns = [aws_iam_policy.policy_one.arn, aws_iam_policy.policy_two.arn]
 }
-EOF
-  managed_policy_arns = [aws_iam_policy.policy_one.arn, aws_iam_policy.policy_two.arn, "arn:aws:iam::aws:policy/AdministratorAccess"]
-}
+
 
 resource "aws_iam_policy" "policy_one" {
   name = "policy-618033"
@@ -202,4 +189,15 @@ resource "aws_iam_policy" "policy_two" {
       },
     ]
   })
+}
+
+data "aws_iam_policy_document" "instance_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
 }
