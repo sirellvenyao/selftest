@@ -4,6 +4,10 @@ provider "aws" {
 resource "aws_s3_bucket" "mytestssakvnkasicsk19230dklsc" {
   bucket = "mytestssakvnkasicsk19230dklsc"
 }
+resource "aws_iam_group_policy_attachment" "test-attach" {
+  group      = aws_iam_group.group.name
+  policy_arn = aws_iam_policy.policy.arn
+}
 
 resource "aws_s3_bucket_policy" "mytestssakvnkasicsk19230dklsc" {
   bucket = aws_s3_bucket.mytestssakvnkasicsk19230dklsc.id
