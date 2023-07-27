@@ -202,11 +202,11 @@ data "aws_iam_policy_document" "instance_assume_role_policy" {
   }
 }
 
-data "archive_file" "lambda" {
-  type        = "zip"
-  source_file = "lambda.js"
-  output_path = "lambda_function_payload.zip"
-}
+//data "archive_file" "lambda" {
+//  type        = "zip"
+//  source_file = "lambda.js"
+//  output_path = "lambda_function_payload.zip"
+//}
 
 resource "aws_lambda_function" "test_lambda" {
   # If the file is not in the current working directory you will need to include a
@@ -216,7 +216,7 @@ resource "aws_lambda_function" "test_lambda" {
   role          = aws_iam_role.example.arn
   handler       = "index.test"
 
-  source_code_hash = data.archive_file.lambda.output_base64sha256
+  //source_code_hash = data.archive_file.lambda.output_base64sha256
 
   runtime = "nodejs18.x"
 
