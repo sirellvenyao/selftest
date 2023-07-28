@@ -240,8 +240,8 @@ resource "aws_lambda_function" "test_lambda_2" {
   runtime = "nodejs18.x"
 }
 
-resource "aws_iam_role" "test_role" {
-  name = "test_role"
+resource "aws_iam_role" "jsonencode" {
+  name = "jsonencode"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -262,4 +262,32 @@ resource "aws_iam_role" "test_role" {
   tags = {
     tag-key = "tag-value"
   }
+}
+
+data "aws_iam_policy_document" "instance_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "instance_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "data_instance" {
+  name               = "instance_role"
+  path               = "/system/"
+  assume_role_policy = data.aws_iam_policy_document.instance_assume_role_policy.json
 }
