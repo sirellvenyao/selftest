@@ -454,7 +454,7 @@ POLICY
 }
 
 
-resource "aws_cloudtrail" "foobar" {
+resource "aws_cloudtrail" "foobar22" {
   name                          = "tf-trail-foobar-2"
   //s3_bucket_name                = aws_s3_bucket.foo.id
   //s3_key_prefix                 = "prefix"
