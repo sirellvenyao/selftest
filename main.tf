@@ -453,3 +453,19 @@ resource "aws_s3_bucket_policy" "foo" {
 POLICY
 }
 
+
+resource "aws_cloudtrail" "foobar" {
+  name                          = "tf-trail-foobar-2"
+  //s3_bucket_name                = aws_s3_bucket.foo.id
+  //s3_key_prefix                 = "prefix"
+  include_global_service_events = false
+  event_selector {
+    read_write_type           = "All"
+    include_management_events = true
+
+    data_resource {
+      type   = "AWS::Lambda::Function"
+      values = ["arn:aws:lambda"]
+    }
+  }
+}
