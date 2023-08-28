@@ -453,3 +453,34 @@ resource "aws_s3_bucket_policy" "foo" {
 POLICY
 }
 
+resource "aws_s3_bucket" "PublicAccesS3Example" {
+  bucket = "PublicAccesS3Example"
+}
+
+
+
+resource "aws_s3_bucket_ownership_controls" "PublicAccesS3Example" {
+  bucket = aws_s3_bucket.PublicAccesS3Example.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "PublicAccesS3Example" {
+  bucket = aws_s3_bucket.PublicAccesS3Example.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_acl" "PublicAccesS3Example" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.PublicAccesS3Example,
+    aws_s3_bucket_public_access_block.PublicAccesS3Example,
+  ]
+
+  bucket = aws_s3_bucket.PublicAccesS3Example.id
+  acl    = "public-read"
+}
