@@ -484,3 +484,21 @@ resource "aws_s3_bucket_acl" "PublicAccesS3Example" {
   bucket = aws_s3_bucket.PublicAccesS3Example.id
   acl    = "public-read"
 }
+
+resource "aws_s3_bucket_acl" "PublicAccesS3Example2xa" {
+  depends_on = [aws_s3_bucket_ownership_controls.PublicAccesS3Example]
+  bucket = aws_s3_bucket.PublicAccesS3Example.id
+  access_control_policy {
+    grant {
+      grantee {
+        type = "Group"
+        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
+      }
+      permission = "READ_ACP"
+    }
+
+    owner {
+      id = data.aws_canonical_user_id.current.id
+    }
+  }
+}
