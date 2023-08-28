@@ -496,9 +496,5 @@ resource "aws_s3_bucket_acl" "PublicAccesS3Example2xa" {
       }
       permission = "READ_ACP"
     }
-
-    owner {
-      id = data.aws_canonical_user_id.current.id
-    }
   }
 }
